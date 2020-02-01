@@ -1,9 +1,12 @@
 import React from 'react';
 import Products from './components/products';
 import NewProduct from './components/newProduct';
-import './App.js'
 
 class App extends React.Component {
+  constructor() {
+    super();
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
   state = { 
     products: [] 
   };
@@ -19,16 +22,16 @@ class App extends React.Component {
     .catch(console.log)
   }
 
-  submitHandler = (form) => {console.log(form)} 
+  handleSubmit = (event) => {console.log(event); } 
   render() {
       return (
         <div className="container-fluid">
-        <div class="row">
+        <div className="row">
           <div className="col-5">
           <Products products={this.state.products} />
           </div>
           <div className="col-5">
-          <NewProduct submitHandler={this.submitHandler} />
+          <NewProduct handleSubmit={this.handleSubmit} />
           </div>
         </div>
         </div>
