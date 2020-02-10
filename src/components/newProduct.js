@@ -4,17 +4,24 @@ class NewProduct extends React.Component {
    constructor(props) {
       super(props);
       this.state = {
-         productName: '',
-         productDescription: '',
-         productPrice: ''
+         // productName: '',
+         // productDescription: '',
+         // productPrice: '',
+         // productImageURL: '',
+         productName: 'Fidget Ring',
+         productDescription: 'Great for calming the nerves',
+         productPrice: '2.99',
+         productImageURL: 'http://localhost:3000/images/fidget_spinner.jpg',
       };
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
+
+      console.log('newProduct', this.props);
    }
 
    handleSubmit(event) {
-      console.log('submitting values');
       event.preventDefault();
+      this.props.handleSubmit(this.state);
    }
 
    handleChange(event) {
@@ -24,9 +31,8 @@ class NewProduct extends React.Component {
 
    render() {
       return (
-      <div>
-      <h1>New Product</h1>
-      <form onSubmit={this.handleSubmit}>
+      <div className="row justify-content-center">
+      <form onSubmit={this.handleSubmit} className="col-md-6 col-sm-12">
          <div className="form-group">
            <label htmlFor="productName">Product Name</label>
            <input type="text" className="form-control" id="productName" placeholder="Product Name" 
@@ -42,6 +48,11 @@ class NewProduct extends React.Component {
            <label htmlFor="productPrice">Price</label>
            <input type="text" className="form-control" id="productPrice" placeholder="5.99"
            value={this.state.productPrice} onChange={this.handleChange} />
+         </div>
+         <div className="form-group">
+           <label htmlFor="productImageURL">Image URL</label>
+           <input type="text" className="form-control" id="productImageURL" placeholder="http://localhost:3000/images/foo.jpg"
+           value={this.state.productImageURL} onChange={this.handleChange} />
          </div>
          <button type="submit" className="btn btn-primary">Submit</button>
        </form>
