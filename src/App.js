@@ -17,27 +17,26 @@ class App extends React.Component {
   };
   
   componentDidMount() {this.loadProductsFromDb()};
-  console.log('params', useParams());
   
   // RETRIEVE
   loadProductsFromDb = () => {
     if (this.state.dev) {
       this.setState({ products: [
-        {_id: "5e3615179d7a8e01d85147e1",
-        imageURL: "http://localhost:3000/images/office_chair.jpg",
-        description: "sit and stay a while",
-        name: "Office Chair",
-        price: 62.99},
-        {_id: "5e3616e59d7a8e01d85147e3",
-        imageURL: "http://localhost:3000/images/fidget_spinner.jpg",
-        description: "Great for calming the nerves",
-        name: "Fidget Ring 11",
-        price: 4.99},
-        {_id: "5e3617349d7a8e01d85147e4",
-        imageURL: "http://localhost:3000/images/smart_plug.jpg",
-        description: "connect iphone or android to any outlet",
-        name: "Smart Plug",
-        price: 24.5}
+        { _id: "5e3615179d7a8e01d85147e1",
+          imageURL: "http://localhost:3000/images/office_chair.jpg",
+          description: "sit and stay a while",
+          name: "Office Chair",
+          price: 62.99},
+        { _id: "5e3616e59d7a8e01d85147e3",
+          imageURL: "http://localhost:3000/images/fidget_spinner.jpg",
+          description: "Great for calming the nerves",
+          name: "Fidget Ring 11",
+          price: 4.99},
+        { _id: "5e3617349d7a8e01d85147e4",
+          imageURL: "http://localhost:3000/images/smart_plug.jpg",
+          description: "connect iphone or android to any outlet",
+          name: "Smart Plug",
+          price: 24.5}
      ]});
     } else {
       this.setState({ isFetching: true })
