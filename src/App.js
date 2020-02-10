@@ -8,56 +8,65 @@ import './App.css';
 class App extends React.Component {
   constructor(props) {
     super(props);
+    this.loadProductsFromDb();
   }
   state = {
-    dev: true,
+    dev: true,  //easiest for now for stackblitz
     error: null, 
     isFetching: false,
-    products: [] 
+    products: [],
+    currentProductId: ''
   };
   
-  componentDidMount() {this.loadProductsFromDb()};
+  componentDidMount() {};
   
   // RETRIEVE
   loadProductsFromDb = () => {
+    // load mock data when dev is true
     if (this.state.dev) {
       this.setState({ products: [
-        {_id: "5e3615179d7a8e01d85147e1",
-        imageURL: "http://localhost:3000/images/office_chair.jpg",
-        description: "sit and stay a while",
-        name: "Office Chair",
-        price: 62.99},
-        {_id: "5e3616e59d7a8e01d85147e3",
-        imageURL: "http://localhost:3000/images/fidget_spinner.jpg",
-        description: "Great for calming the nerves",
-        name: "Fidget Ring 11",
-        price: 4.99},
-        {_id: "5e3617349d7a8e01d85147e4",
-        imageURL: "http://localhost:3000/images/smart_plug.jpg",
-        description: "connect iphone or android to any outlet",
-        name: "Smart Plug",
-        price: 24.5}
+        { _id: "5e3615179d7a8e01d85147e1",
+          imageURL: "http://localhost:3000/images/office_chair.jpg",
+          description: "sit and stay a while",
+          name: "Office Chair",
+          price: 62.99},
+        { _id: "5e3616e59d7a8e01d85147e3",
+          imageURL: "http://localhost:3000/images/fidget_spinner.jpg",
+          description: "Great for calming the nerves",
+          name: "Fidget Ring 11",
+          price: 4.99},
+        { _id: "5e3617349d7a8e01d85147e4",
+          imageURL: "http://localhost:3000/images/smart_plug.jpg",
+          description: "connect iphone or android to any outlet",
+          name: "Smart Plug",
+          price: 24.5}
      ]});
     } else {
-
-
+      // load data from api when dev is false
       this.setState({ isFetching: true })
       fetch('http://localhost:4200/api/products')
       .then(res => res.json())
       .then((data) => {
-        this.setState({ isFetching: false })
-        this.setState({ products: data});
-        console.log(data);
+        this.setState({ 
+          isFetching: false,
+          products: data
+        });
+        if (document.location.href.match(/\/update\/(.+)/)) {
+          this.setState({ currentProductId: RegExp.$1 });
+        } else {
+          this.setState({ currentProductId: 'did not match'})
+        }
       },
       (error) => {
         this.setState({
-          isLoaded: true,
+          isFetching: false,
           error
         });
       })
     }
+
   }
-  
+
 
   // CREATE
   handleNewProductSubmit = (formData) => {
@@ -144,9 +153,10 @@ class App extends React.Component {
               />
             </Route>
             <Route path="/update/:id">
+            {console.log('just before EditProduct', this.state)}
               <EditProduct 
                 products     = {this.state.products} 
-                handleSubmit = {this.handleNewProductSubmit} />
+                handleSubmit = {this.handleProductUpdate} />
             </Route>
           </Switch>
         </Router>
