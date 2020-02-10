@@ -47,9 +47,10 @@ class App extends React.Component {
       fetch('http://localhost:4200/api/products')
       .then(res => res.json())
       .then((data) => {
-        this.setState({ isFetching: false })
-        this.setState({ products: data});
-        this.render(<p>Hello World</p>);
+        this.setState({ 
+          isFetching: false,
+          products: data
+        });
         if (document.location.href.match(/\/update\/(.+)/)) {
           this.setState({ currentProductId: RegExp.$1 });
         } else {
@@ -155,7 +156,7 @@ class App extends React.Component {
             {console.log('just before EditProduct', this.state)}
               <EditProduct 
                 products     = {this.state.products} 
-                handleSubmit = {this.handleNewProductSubmit} />
+                handleSubmit = {this.handleProductUpdate} />
             </Route>
           </Switch>
         </Router>
