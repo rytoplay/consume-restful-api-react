@@ -10,6 +10,7 @@ class Products extends React.Component {
          <div className="container">
          <div className="row justify-content-center">
          {this.props.products.map((product) => {
+            console.log(product);
             return (
          
             <div className="card col-lg-6 col-sm-12" key={product._id} style={{marginTop: "10px", boxShadow: "2px 2px 2px rgba(0, 0, 0, .2)"}}>

@@ -11,10 +11,8 @@ class EditProduct extends React.Component {
       };
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
+      this.products = this.props.products;
       console.log('newProduct', this.props);
-      if (!this.props.products.length) {
-         console.error('"products" array did not pass down to child component');
-      }
    }
 
    handleSubmit(event) {
