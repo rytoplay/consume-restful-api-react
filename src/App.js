@@ -10,13 +10,14 @@ class App extends React.Component {
     super(props);
   }
   state = {
-    dev: true,
+    dev: true,  //easiest for now for stackblitz
     error: null, 
     isFetching: false,
     products: [] 
   };
   
   componentDidMount() {this.loadProductsFromDb()};
+  console.log('params', useParams());
   
   // RETRIEVE
   loadProductsFromDb = () => {
@@ -39,8 +40,6 @@ class App extends React.Component {
         price: 24.5}
      ]});
     } else {
-
-
       this.setState({ isFetching: true })
       fetch('http://localhost:4200/api/products')
       .then(res => res.json())
