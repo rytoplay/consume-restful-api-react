@@ -8,21 +8,18 @@ import './App.css';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.loadProductsFromDb();
   }
   state = {
     dev: true,  //easiest for now for stackblitz
     error: null, 
     isFetching: false,
-    products: [],
-    currentProductId: ''
+    products: [] 
   };
   
-  componentDidMount() {};
+  componentDidMount() {this.loadProductsFromDb()};
   
   // RETRIEVE
   loadProductsFromDb = () => {
-    // load mock data when dev is true
     if (this.state.dev) {
       this.setState({ products: [
         { _id: "5e3615179d7a8e01d85147e1",
@@ -42,31 +39,23 @@ class App extends React.Component {
           price: 24.5}
      ]});
     } else {
-      // load data from api when dev is false
       this.setState({ isFetching: true })
       fetch('http://localhost:4200/api/products')
       .then(res => res.json())
       .then((data) => {
-        this.setState({ 
-          isFetching: false,
-          products: data
-        });
-        if (document.location.href.match(/\/update\/(.+)/)) {
-          this.setState({ currentProductId: RegExp.$1 });
-        } else {
-          this.setState({ currentProductId: 'did not match'})
-        }
+        this.setState({ isFetching: false })
+        this.setState({ products: data});
+        console.log(data);
       },
       (error) => {
         this.setState({
-          isFetching: false,
+          isLoaded: true,
           error
         });
       })
     }
-
   }
-
+  
 
   // CREATE
   handleNewProductSubmit = (formData) => {
@@ -153,7 +142,6 @@ class App extends React.Component {
               />
             </Route>
             <Route path="/update/:id">
-            {console.log('just before EditProduct', this.state)}
               <EditProduct 
                 products     = {this.state.products} 
                 handleSubmit = {this.handleProductUpdate} />
