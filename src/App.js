@@ -13,11 +13,12 @@ class App extends React.Component {
     dev: true,  //easiest for now for stackblitz
     error: null, 
     isFetching: false,
-    products: [] 
+    products: [],
+    currentProduct: {}
   };
   
-  componentDidMount() {this.loadProductsFromDb()};
-  
+  componentDidMount() {this.loadProductsFromDb();};
+
   // RETRIEVE
   loadProductsFromDb = () => {
     if (this.state.dev) {
@@ -45,7 +46,6 @@ class App extends React.Component {
       .then((data) => {
         this.setState({ isFetching: false })
         this.setState({ products: data});
-        console.log(data);
       },
       (error) => {
         this.setState({
@@ -64,7 +64,7 @@ class App extends React.Component {
       _id: formData.id,
       name: formData.productName,
       description: formData.productDescription,
-      price: formData.productPrice,
+      amount: formData.productPrice,
       imageURL: formData.productImageURL
     }
     // perform fetch(url, method: POST)
@@ -80,6 +80,7 @@ class App extends React.Component {
     .then((data) => {
       productData._id = data.id;
       this.setState({ products: [...this.state.products, productData ]}, this.loadProductsFromDb());
+      document.location.replace('/');
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -87,11 +88,28 @@ class App extends React.Component {
   } 
 
   // UPDATE
-  handleProductUpdate = (id) => {
-    const productData = this.state.products.filter( prod => prod._id === id );
-    document.location.replace(`/update/${id}`);
-    console.log('update', productData);
-
+  handleProductUpdate = (formData) => {
+    console.log('update', formData);
+    console.log(Route);
+    const productData = {
+      _id: formData.productId,
+      name: formData.productName,
+      description: formData.productDescription,
+      amount: formData.productPrice,
+      imageURL: formData.productImageURL
+    }
+    // perform fetch(url, method: POST)
+    fetch('http://localhost:4200/api/products/'+productData._id, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(productData)
+    }).then(() => {
+      this.setState({ products: [...this.state.products, productData ]}, this.loadProductsFromDb());
+      document.location.replace('/');
+    })
   }
 
   // DELETE
