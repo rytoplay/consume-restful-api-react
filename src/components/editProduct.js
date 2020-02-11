@@ -1,9 +1,12 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Link, Switch, useParams, Redirect } from 'react-router-dom';
+
 
 class EditProduct extends React.Component {
    constructor(props) {
       super(props);
       this.state = {
+         productId: '',
          productName: '',
          productDescription: '',
          productPrice: '',
@@ -13,6 +16,25 @@ class EditProduct extends React.Component {
       this.handleSubmit = this.handleSubmit.bind(this);
       this.products = this.props.products;
       console.log('newProduct', this.props);
+   }
+
+   componentDidMount() {
+      console.log('component update ran');
+      if (document.location.href.match(/([^\/]+)$/)) {
+         const id = RegExp.$1;
+         const currentProduct = this.props.products.filter( p => p._id === id );
+         if (!currentProduct.length) {
+            return (<Redirect to="/" />);
+         }
+         console.log('currentProduct', currentProduct);
+         this.setState({ 
+            productId: id,
+            productName: currentProduct[0].name,
+            productDescription: currentProduct[0].description,
+            productPrice: currentProduct[0].price,
+            productImageURL: currentProduct[0].imageURL,
+         });
+      }
    }
 
    handleSubmit(event) {
@@ -29,7 +51,6 @@ class EditProduct extends React.Component {
       return (
       <div className="row justify-content-center">
       <form onSubmit={this.handleSubmit} className="col-md-6 col-sm-12">
-         <input type="text" id="id" value={this.state.id} onChange={this.handleChange} />
          <div className="form-group">
            <label htmlFor="productName">Product Name</label>
            <input type="text" className="form-control" id="productName" placeholder="Product Name" 
